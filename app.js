@@ -1,6 +1,7 @@
 const express = require('express')
 const config = require('./app/configs/config')
 const routerApiCategories = require('./app/api/v1/categories/router')
+const routerApiImages = require('./app/api/v1/images/routes')
 require('./app/db/connection')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -9,11 +10,12 @@ const handleErrorMiddleware = require('./app/middleware/handle-error')
 
 const app = express()
 app.use(morgan('tiny'))
-// app.use(express.static('public'))
+app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 
 const v1 = '/api/v1/cms'
 app.use(v1, routerApiCategories)
+app.use(v1, routerApiImages)
 
 app.listen(config.port, () => {
     console.log(`Server running on port ${process.env.PORT}`)
