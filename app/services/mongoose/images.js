@@ -1,4 +1,5 @@
 const Image = require('../../api/v1/images/model')
+const { NotFoundError } = require('../../error')
 
 const createImage = async (req) => {
     const result = await Image.create({
@@ -8,4 +9,12 @@ const createImage = async (req) => {
     return result
 }
 
-module.exports = { createImage }
+const checkingImage = async (id) => {
+    const result = await Image.findOne({ _id: id })
+
+    if (!result) throw new NotFoundError(`No image with id : ${id}`)
+
+    return result
+}
+
+module.exports = { createImage, checkingImage }

@@ -2,6 +2,8 @@ const express = require('express')
 const config = require('./app/configs/config')
 const routerApiCategories = require('./app/api/v1/categories/router')
 const routerApiImages = require('./app/api/v1/images/routes')
+const routerApiTalents = require('./app/api/v1/talents/routes')
+const routerApiEvents = require('./app/api/v1/events/routes')
 require('./app/db/connection')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -11,11 +13,14 @@ const handleErrorMiddleware = require('./app/middleware/handle-error')
 const app = express()
 app.use(morgan('tiny'))
 app.use(express.static('public'))
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 const v1 = '/api/v1/cms'
 app.use(v1, routerApiCategories)
 app.use(v1, routerApiImages)
+app.use(v1, routerApiTalents)
+app.use(v1, routerApiEvents)
 
 app.listen(config.port, () => {
     console.log(`Server running on port ${process.env.PORT}`)

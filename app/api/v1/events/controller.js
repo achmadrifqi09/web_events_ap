@@ -1,16 +1,16 @@
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
-
 const {
-    getAllCategory,
-    createCategory,
-    findOneCategory,
-    updateCategory,
-    deleteCategory,
-} = require('../../../services/mongoose/categories')
+    getAllEvent,
+    createEvent,
+    getOneEvent,
+    updateEvent,
+    deleteEvent,
+} = require('../../../services/mongoose/events')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const index = async (req, res, next) => {
     try {
-        const result = await getAllCategory()
+        const result = await getAllEvent(req)
+
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
             message: ReasonPhrases.OK,
@@ -23,7 +23,7 @@ const index = async (req, res, next) => {
 
 const create = async (req, res, next) => {
     try {
-        const result = await createCategory(req)
+        const result = await createEvent(req)
         res.status(StatusCodes.CREATED).json({
             status_code: StatusCodes.CREATED,
             message: ReasonPhrases.CREATED,
@@ -36,7 +36,7 @@ const create = async (req, res, next) => {
 
 const find = async (req, res, next) => {
     try {
-        const result = await findOneCategory(req)
+        const result = await getOneEvent(req)
 
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
@@ -50,7 +50,8 @@ const find = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const result = await updateCategory(req)
+        const result = await updateEvent(req)
+
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
             message: ReasonPhrases.OK,
@@ -63,7 +64,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
     try {
-        const result = await deleteCategory(req)
+        const result = await deleteEvent(req)
 
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,

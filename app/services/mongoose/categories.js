@@ -25,6 +25,7 @@ const findOneCategory = async (req) => {
 }
 
 const updateCategory = async (req) => {
+    console.log('test update category services')
     const { id } = req.params
     const name = req.body.name
 
@@ -32,11 +33,7 @@ const updateCategory = async (req) => {
 
     if (checkCategoryName) throw new BadRequestError('Category names should be different')
 
-    const result = Category.findOneAndUpdate(
-        { _id: id },
-        { name },
-        { new: true, runValidators: true }
-    )
+    const result = Category.findOneAndUpdate({ _id: id }, { name }, { new: true, runValidators: true })
     if (!result) throw new NotFoundError(`No category has an id : ${id}`)
     return result
 }
@@ -51,10 +48,19 @@ const deleteCategory = async (req) => {
     return result
 }
 
+const checkingCategory = async (id) => {
+    const result = await Category.findOne({ _id: id })
+
+    if (!result) throw new NotFoundError('Category not found')
+
+    return result
+}
+
 module.exports = {
     getAllCategory,
     createCategory,
     findOneCategory,
     updateCategory,
     deleteCategory,
+    checkingCategory,
 }
