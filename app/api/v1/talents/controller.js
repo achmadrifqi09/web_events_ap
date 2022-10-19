@@ -1,16 +1,16 @@
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
-
 const {
-    getAllCategory,
-    createCategory,
-    findOneCategory,
-    updateCategory,
-    deleteCategory,
-} = require('../../../services/mongoose/categories')
+    getAllTalent,
+    createTalent,
+    getOneTalent,
+    updateTalent,
+    deleteTalent,
+} = require('../../../services/mongoose/talents')
 
 const index = async (req, res, next) => {
     try {
-        const result = await getAllCategory()
+        const result = await getAllTalent(req)
+
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
             message: ReasonPhrases.OK,
@@ -23,20 +23,7 @@ const index = async (req, res, next) => {
 
 const create = async (req, res, next) => {
     try {
-        const result = await createCategory(req)
-        res.status(StatusCodes.CREATED).json({
-            status_code: StatusCodes.CREATED,
-            message: ReasonPhrases.CREATED,
-            data: result,
-        })
-    } catch (error) {
-        next(error)
-    }
-}
-
-const find = async (req, res, next) => {
-    try {
-        const result = await findOneCategory(req)
+        const result = await createTalent(req)
 
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
@@ -48,9 +35,23 @@ const find = async (req, res, next) => {
     }
 }
 
+const find = async (req, res, next) => {
+    try {
+        const result = await getOneTalent(req)
+
+        res.status(StatusCodes.OK).json({
+            status_code: StatusCodes.OK,
+            data: result,
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 const update = async (req, res, next) => {
     try {
-        const result = await updateCategory(req)
+        const result = await updateTalent(req)
+
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
             message: ReasonPhrases.OK,
@@ -63,7 +64,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
     try {
-        const result = await deleteCategory(req)
+        const result = await deleteTalent(req.params.id)
 
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,

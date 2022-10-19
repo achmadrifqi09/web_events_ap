@@ -1,7 +1,6 @@
 const { StatusCodes } = require('http-status-codes')
 
 const handleErrorMiddleware = (error, req, res, next) => {
-
     let customError = {
         statusCode: error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
         message: error.message || 'Something went wrong try again later',
@@ -22,13 +21,13 @@ const handleErrorMiddleware = (error, req, res, next) => {
     }
 
     if (error.name === 'CastError') {
-        customError.message = `No category has an id: : ${error.value}`
+        customError.message = `No item has an id: : ${error.value}`
         customError.statusCode = 404
     }
 
     return res
         .status(customError.statusCode)
-        .json({ status: customError.statusCode, message: customError.message })
+        .json({ status_code: customError.statusCode, message: customError.message })
 }
 
 module.exports = handleErrorMiddleware

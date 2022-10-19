@@ -1,3 +1,6 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "terminal.integrated.automationProfile.linux": {},
+    "terminal.integrated.defaultLocation": "view",
+    "terminal.integrated.tabs.hideCondition": "singleGroup"
 }

@@ -1,5 +1,4 @@
 const { createImage } = require('../../../services/mongoose/images')
-const Image = require('./model')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const create = async (req, res, next) => {
@@ -7,7 +6,7 @@ const create = async (req, res, next) => {
         const result = await createImage(req)
 
         res.status(StatusCodes.CREATED).json({
-            status: StatusCodes.CREATED,
+            status_code: StatusCodes.CREATED,
             message: ReasonPhrases.CREATED,
             data: result,
         })
