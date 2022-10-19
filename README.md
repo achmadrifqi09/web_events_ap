@@ -1,3 +1,4 @@
+API Spec
 | Routes | HTTP Method | Description | Middleware |
 | --- | --- | --- | --- |
 | /api/v1/cms/categories | GET | Get all category | Yes |
@@ -78,27 +79,4 @@
 | /api/v1/participants/auth/signin | POST | signin | No |
 | /api/v1/participants/signup | POST | signup | No |
 
-## Get all categories
 
-Method GET
-
-`https://(domain)/api/v1/cms/categories`
-
-Respon body :
-
-```json
-{
-	status : 200,
-	message : "OK"
-	data : [
-		{
-			id : 76493,
-			name : "String"
-		},
-		{
-			id : 3321,
-			name : "String"
-		}
-	]
-}
-```
