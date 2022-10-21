@@ -9,6 +9,11 @@ let categorySchema = Schema(
             maxLength: [20, 'Miximum length 20 characters'],
             required: [true, 'Category name is required'],
         },
+        organizer: {
+            type: Schema.Types.ObjectId,
+            ref: 'Organizer',
+            required: true,
+        },
     },
     { timestamps: true }
 )
