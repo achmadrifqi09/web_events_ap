@@ -2,10 +2,12 @@ const Event = require('../../api/v1/events/model')
 const { checkingCategory } = require('./categories')
 const { checkingImage } = require('./images')
 const { checkingTalent } = require('./talents')
-const { NotFoundError, BadRequestError } = require('../../error')
+const { BadRequestError, NotFoundError } = require('../../error')
+const { find } = require('../../api/v1/events/model')
+const e = require('express')
 
 const getAllEvent = async (req) => {
-    const { keyword, category, talent } = req.query
+    const { keyword, category, talent, status_event } = req.query
     let condition = {}
 
     if (keyword) {
@@ -18,6 +20,10 @@ const getAllEvent = async (req) => {
 
     if (talent) {
         condition = { ...condition, talent: { $regex: talent, $options: 'i' } }
+    }
+
+    if (status_event) {
+        condition = { ...condition, status_event: { $regex: status_event, $options: 'i' } }
     }
 
     const result = await Event.find(condition)
@@ -138,4 +144,25 @@ const deleteEvent = async (req) => {
     return result
 }
 
-module.exports = { getAllEvent, createEvent, getOneEvent, updateEvent, deleteEvent }
+const updateStatusEvent = async (req) => {
+    const { id } = req.params
+    const { status_event } = req.body
+
+    const eventData = await Event.findOne({ _id: id })
+    if (!eventData) throw new NotFoundError('Event not found')
+
+    if (status_event == 'Published' || status_event == 'Draft') {
+        const result = await Event.findByIdAndUpdate(
+            { _id: id },
+            { status_event: status_event },
+            { new: true, runValidators: true }
+        )
+
+        return result
+    } else {
+        throw new BadRequestError('Invalid event status')
+    }
+}
+
+module.exports = { getAllEvent, createEvent, getOneEvent, updateEvent, deleteEvent, updateStatusEvent }
+

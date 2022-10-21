@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { index, create, find, update, destroy } = require('./controller')
+const { index, create, find, update, destroy, status } = require('./controller')
 
 router.get('/events', index)
 
@@ -11,5 +11,7 @@ router.post('/events', create)
 router.put('/events/:id', update)
 
 router.delete('/events/:id', destroy)
+
+router.put('/events/:id/status', status)
 
 module.exports = router
