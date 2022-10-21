@@ -4,6 +4,7 @@ const {
     getOneEvent,
     updateEvent,
     deleteEvent,
+    updateStatusEvent,
 } = require('../../../services/mongoose/events')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -76,4 +77,13 @@ const destroy = async (req, res, next) => {
     }
 }
 
-module.exports = { index, create, find, update, destroy }
+const status = async (req, res, next) => {
+    try {
+        const result = await updateStatusEvent(req)
+
+        res.send(result)
+    } catch (error) {
+        next(error)
+    }
+}
+module.exports = { index, create, find, update, destroy, status }
