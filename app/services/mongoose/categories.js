@@ -1,46 +1,50 @@
 const Category = require('../../api/v1/categories/model')
 const { BadRequestError, NotFoundError } = require('../../error')
 
-const getAllCategory = () => {
-    const result = Category.find()
+const getAllCategory = (req) => {
+    const result = Category.find({ organizer: req.user.organizer })
     return result
 }
 
 const createCategory = async (req) => {
     const { name } = req.body
-    const checkCategoryName = await Category.findOne({ name })
+
+    const checkCategoryName = await Category.findOne({ name: name })
 
     if (checkCategoryName) throw new BadRequestError('Category name already exist.')
 
-    const result = Category.create({ name })
+    const result = Category.create({ name: name, organizer: req.user.organizer })
     return result
 }
 
 const findOneCategory = async (req) => {
     const { id } = req.params
-    const result = await Category.findOne({ _id: id })
+    const result = await Category.findOne({ _id: id, organizer: req.user.organizer })
     if (!result) throw new NotFoundError(`No category has an id: : ${id}`)
 
     return result
 }
 
 const updateCategory = async (req) => {
-    console.log('test update category services')
     const { id } = req.params
     const name = req.body.name
 
-    const checkCategoryName = await Category.findOne({ name, _id: { $ne: id } })
+    const checkCategoryName = await Category.findOne({
+        name,
+        organizer: req.user.organizer,
+        _id: { $ne: id },
+    })
 
     if (checkCategoryName) throw new BadRequestError('Category names should be different')
 
-    const result = Category.findOneAndUpdate({ _id: id }, { name }, { new: true, runValidators: true })
+    const result = Category.findOneAndUpdate({ _id: id }, { name: name }, { new: true, runValidators: true })
     if (!result) throw new NotFoundError(`No category has an id : ${id}`)
     return result
 }
 
 const deleteCategory = async (req) => {
     const { id } = req.params
-    const result = await Category.findOne({ _id: id })
+    const result = await Category.findOne({ _id: id, organizer: req.user.organizer })
 
     if (!result) throw new NotFoundError(`No category has an id : ${id}`)
 
