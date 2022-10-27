@@ -18,6 +18,11 @@ const talentSchema = Schema(
             ref: 'Image',
             required: true,
         },
+        organizer: {
+            type: Schema.Types.ObjectId,
+            ref: 'Organizer',
+            required: true,
+        },
     },
     { timestamps: true }
 )

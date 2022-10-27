@@ -1,15 +1,15 @@
 const Category = require('../../api/v1/categories/model')
 const { BadRequestError, NotFoundError } = require('../../error')
 
-const getAllCategory = (req) => {
-    const result = Category.find({ organizer: req.user.organizer })
+const getAllCategory = async (req) => {
+    const result = await Category.find({ organizer: req.user.organizer })
     return result
 }
 
 const createCategory = async (req) => {
     const { name } = req.body
 
-    const checkCategoryName = await Category.findOne({ name: name })
+    const checkCategoryName = await Category.findOne({ name: name, organizer: req.user.organizer })
 
     if (checkCategoryName) throw new BadRequestError('Category name already exist.')
 

@@ -7,6 +7,7 @@ const routerApiTalents = require('./app/api/v1/talents/routes')
 const routerApiEvents = require('./app/api/v1/events/routes')
 const routerApiOrganizer = require('./app/api/v1/organizers/routes')
 const routerApiAuth = require('./app/api/v1/auth/routes')
+const routerApiOrder = require('./app/api/v1/orders/routes')
 
 require('./app/db/connection')
 const morgan = require('morgan')
@@ -20,6 +21,10 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.listen(config.port, () => {
+    console.log(`Server running on port ${process.env.PORT}`)
+})
+
 const v1 = '/api/v1/cms'
 app.use(v1, routerApiCategories)
 app.use(v1, routerApiImages)
@@ -27,10 +32,7 @@ app.use(v1, routerApiTalents)
 app.use(v1, routerApiEvents)
 app.use(v1, routerApiOrganizer)
 app.use(v1, routerApiAuth)
-
-app.listen(config.port, () => {
-    console.log(`Server running on port ${process.env.PORT}`)
-})
+app.use(v1, routerApiOrder)
 
 app.use(notFoundMidlleware)
 app.use(handleErrorMiddleware)

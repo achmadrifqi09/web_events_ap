@@ -64,7 +64,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
     try {
-        const result = await deleteTalent(req.params.id)
+        const result = await deleteTalent(req)
 
         res.status(StatusCodes.OK).json({
             status_code: StatusCodes.OK,
