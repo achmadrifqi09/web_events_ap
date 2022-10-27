@@ -3,27 +3,25 @@ const { checkingCategory } = require('./categories')
 const { checkingImage } = require('./images')
 const { checkingTalent } = require('./talents')
 const { BadRequestError, NotFoundError } = require('../../error')
-const { find } = require('../../api/v1/events/model')
-const e = require('express')
 
 const getAllEvent = async (req) => {
-    const { keyword, category, talent, status_event } = req.query
-    let condition = {}
+    const { keyword, category, talent, statusEvent } = req.query
+    let condition = { organizer: req.user.organizer }
 
     if (keyword) {
         condition = { ...condition, title: { $regex: keyword, $options: 'i' } }
     }
 
     if (category) {
-        condition = { ...condition, category: { $regex: category, $options: 'i' } }
+        condition = { ...condition, category: category }
     }
 
     if (talent) {
-        condition = { ...condition, talent: { $regex: talent, $options: 'i' } }
+        condition = { ...condition, talent: talent }
     }
 
-    if (status_event) {
-        condition = { ...condition, status_event: { $regex: status_event, $options: 'i' } }
+    if (statusEvent) {
+        condition = { ...condition, statusEvent: { $regex: statusEvent, $options: 'i' } }
     }
 
     const result = await Event.find(condition)
@@ -31,7 +29,7 @@ const getAllEvent = async (req) => {
         .populate({
             path: 'talent',
             select: '_id name role image',
-            populate: { path: 'image', select: '_id url_image' },
+            populate: { path: 'image', select: '_id urlImage' },
         })
     return result
 }
@@ -42,9 +40,9 @@ const createEvent = async (req) => {
         date,
         about,
         tagline,
-        vanue_name,
-        keypoint,
-        status_event,
+        venueName,
+        keyPoint,
+        statusEvent,
         tickets,
         image,
         category,
@@ -64,21 +62,23 @@ const createEvent = async (req) => {
         date,
         about,
         tagline,
-        vanue_name,
-        keypoint,
-        status_event,
+        venueName,
+        keyPoint,
+        statusEvent,
         tickets,
         image,
         category,
         talent,
+        organizer: req.user.organizer,
     })
 
     return result
 }
 
 const getOneEvent = async (req) => {
+    console.log(req.user.organizer)
     const { id } = req.params
-    const result = await Event.findOne({ _id: id })
+    const result = await Event.findOne({ _id: id, organizer: req.user.organizer })
 
     if (!result) throw new NotFoundError('Event not found')
 
@@ -92,9 +92,9 @@ const updateEvent = async (req) => {
         date,
         about,
         tagline,
-        vanue_name,
-        keypoint,
-        status_event,
+        venueName,
+        keyPoint,
+        statusEvent,
         tickets,
         image,
         category,
@@ -105,7 +105,7 @@ const updateEvent = async (req) => {
     await checkingCategory(category)
     checkingTalent(talent)
 
-    const checkEvent = await Event.findOne({ title, _id: { $ne: id } })
+    const checkEvent = await Event.findOne({ title, organizer: req.user.organizer, _id: { $ne: id } })
 
     if (checkEvent) throw new NotFoundError('Event already exist')
 
@@ -116,13 +116,14 @@ const updateEvent = async (req) => {
             date,
             about,
             tagline,
-            vanue_name,
-            keypoint,
-            status_event,
+            venueName,
+            keyPoint,
+            statusEvent,
             tickets,
             image,
             category,
             talent,
+            organizer: req.user.organizer,
         },
         { new: true, runValidators: true }
     )
@@ -135,7 +136,7 @@ const updateEvent = async (req) => {
 const deleteEvent = async (req) => {
     const { id } = req.params
 
-    const result = await Event.findOne({ _id: id })
+    const result = await Event.findOne({ _id: id, organizer: req.user.organizer })
 
     if (!result) throw new NotFoundError('Event not found')
 
@@ -146,15 +147,15 @@ const deleteEvent = async (req) => {
 
 const updateStatusEvent = async (req) => {
     const { id } = req.params
-    const { status_event } = req.body
+    const { statusEvent } = req.body
 
     const eventData = await Event.findOne({ _id: id })
     if (!eventData) throw new NotFoundError('Event not found')
 
-    if (status_event == 'Published' || status_event == 'Draft') {
+    if (statusEvent == 'Published' || statusEvent == 'Draft') {
         const result = await Event.findByIdAndUpdate(
             { _id: id },
-            { status_event: status_event },
+            { statusEvent: statusEvent },
             { new: true, runValidators: true }
         )
 
@@ -165,4 +166,3 @@ const updateStatusEvent = async (req) => {
 }
 
 module.exports = { getAllEvent, createEvent, getOneEvent, updateEvent, deleteEvent, updateStatusEvent }
-

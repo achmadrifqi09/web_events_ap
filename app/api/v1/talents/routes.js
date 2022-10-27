@@ -3,11 +3,11 @@ const router = express.Router()
 const { index, find, create, update, destroy } = require('./controller')
 const { authenticateUser, authorizationRoles } = require('../../../middleware/auth')
 
-router.get('/talents', index)
+router.get('/talents', authenticateUser, authorizationRoles('organizer'), index)
 
 router.post('/talents', authenticateUser, authorizationRoles('organizer'), create)
 
-router.get('/talents/:id', find)
+router.get('/talents/:id', authenticateUser, authorizationRoles('organizer'), find)
 
 router.put('/talents/:id', authenticateUser, authorizationRoles('organizer'), update)
 

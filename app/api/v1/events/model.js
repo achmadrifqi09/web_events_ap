@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
-const { model, Schema } = mongoose
 
-const ticketSchema = Schema({
+const ticketCategoriesSchema = new mongoose.Schema({
     type: {
         type: String,
-        required: [true, 'Ticket required'],
+        required: [true, 'type required'],
     },
     price: {
         type: Number,
@@ -14,7 +13,7 @@ const ticketSchema = Schema({
         type: Number,
         default: 0,
     },
-    status_ticket_category: {
+    statusTicketCategories: {
         type: Boolean,
         enum: [true, false],
         default: true,
@@ -24,56 +23,63 @@ const ticketSchema = Schema({
     },
 })
 
-const eventSchema = Schema(
+const EventSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            required: [true, 'Title required'],
+            required: [true, 'title required'],
+            minlength: 3,
+            maxlength: 50,
         },
         date: {
             type: Date,
-            required: [true, 'Date required'],
+            required: [true, 'date required'],
         },
         about: {
             type: String,
         },
         tagline: {
             type: String,
-            required: [true, 'Tagline required'],
+            required: [true, 'tagline required'],
         },
-        keypoint: {
+        keyPoint: {
             type: [String],
         },
-        vanue_name: {
+        venueName: {
             type: String,
-            required: [true, 'Vanue name required'],
+            required: [true, 'vanue required'],
         },
-        status_event: {
+        statusEvent: {
             type: String,
             enum: ['Draft', 'Published'],
             default: 'Draft',
         },
         tickets: {
-            type: [ticketSchema],
-            required: [true, 'Ticket required'],
+            type: [ticketCategoriesSchema],
+            required: true,
         },
         image: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Types.ObjectId,
             ref: 'Image',
             required: true,
         },
         category: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Types.ObjectId,
             ref: 'Category',
             required: true,
         },
         talent: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Types.ObjectId,
             ref: 'Talent',
+            required: true,
+        },
+        organizer: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Organizer',
             required: true,
         },
     },
     { timestamps: true }
 )
 
-module.exports = model('Event', eventSchema)
+module.exports = mongoose.model('Event', EventSchema)

@@ -3,7 +3,7 @@ const { model, Schema } = mongoose
 
 let imageSchema = Schema(
     {
-        url_image: {
+        urlImage: {
             type: String,
         },
     },
