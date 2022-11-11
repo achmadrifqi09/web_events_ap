@@ -1,6 +1,6 @@
 const User = require('../../api/v1/users/model')
-const { BadRequestError, NotFoundError, UnauthorizedError } = require('../../error')
-const { createJWT, createUserToken } = require('../../utils')
+const { BadRequestError, UnauthorizedError } = require('../../error')
+const { createJWT, createTokenUser } = require('../../utils')
 
 const signin = async (req) => {
     const { email, password } = req.body
@@ -20,9 +20,9 @@ const signin = async (req) => {
         throw new UnauthorizedError('Invalid creadential')
     }
 
-    const token = createJWT({ payload: createUserToken(result) })
+    const token = createJWT({ payload: createTokenUser(result) })
 
     return token
 }
 
-module.exports = {signin}
+module.exports = { signin }

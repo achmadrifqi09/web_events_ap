@@ -55,7 +55,7 @@ const deleteCategory = async (req) => {
 const checkingCategory = async (id) => {
     const result = await Category.findOne({ _id: id })
 
-    if (!result) throw new NotFoundError('Category not found')
+    if (!result) throw new NotFoundError(`No category has an id : ${id}`)
 
     return result
 }

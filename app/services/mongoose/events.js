@@ -80,7 +80,7 @@ const getOneEvent = async (req) => {
     const { id } = req.params
     const result = await Event.findOne({ _id: id, organizer: req.user.organizer })
 
-    if (!result) throw new NotFoundError('Event not found')
+    if (!result) throw new NotFoundError(`No event has an id : ${id}`)
 
     return result
 }
@@ -128,7 +128,7 @@ const updateEvent = async (req) => {
         { new: true, runValidators: true }
     )
 
-    if (!result) throw new NotFoundError('Event not found')
+    if (!result) throw new NotFoundError(`No event has an id : ${id}`)
 
     return result
 }
@@ -138,7 +138,7 @@ const deleteEvent = async (req) => {
 
     const result = await Event.findOne({ _id: id, organizer: req.user.organizer })
 
-    if (!result) throw new NotFoundError('Event not found')
+    if (!result) throw new NotFoundError(`No event has an id : ${id}`)
 
     result.remove()
 
@@ -150,7 +150,7 @@ const updateStatusEvent = async (req) => {
     const { statusEvent } = req.body
 
     const eventData = await Event.findOne({ _id: id })
-    if (!eventData) throw new NotFoundError('Event not found')
+    if (!eventData) throw new NotFoundError(`No event has an id : ${id}`)
 
     if (statusEvent == 'Published' || statusEvent == 'Draft') {
         const result = await Event.findByIdAndUpdate(

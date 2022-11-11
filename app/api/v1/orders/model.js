@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema(
             type: Date,
             required: true,
         },
-        personalDetail: {
+        participantDetail: {
             firstName: {
                 type: String,
                 required: [true, 'Please provide firstName'],

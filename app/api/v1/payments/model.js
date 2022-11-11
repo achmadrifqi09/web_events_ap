@@ -3,17 +3,27 @@ const { model, Schema } = mongoose
 
 const paymentSchema = Schema(
     {
-        name: {
+        type: {
             type: String,
-            required: [true, 'Payment name required'],
+            required: [true, 'Payment type must be filled in'],
+        },
+        image: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Image',
+            required: true,
         },
         status: {
             type: Boolean,
+            enum: [true, false],
+            default: true,
         },
-        image: {
-            type: Schema.Types.ObjectId,
-            ref: 'Image',
+        organizer: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Organizer',
+            required: true,
         },
     },
     { timestamps: true }
 )
+
+module.exports = model('Payment', paymentSchema)

@@ -7,4 +7,6 @@ module.exports = {
     secretKey: process.env.SECRET_KEY,
     refreshToken: process.env.REFRESH_TOKEN,
     expiredToken: process.env.EXPIRED_TOKEN,
+    mail: process.env.MAIL,
+    password: process.env.PASSWORD,
 }

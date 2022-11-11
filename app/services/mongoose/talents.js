@@ -38,7 +38,7 @@ const getOneTalent = async (req) => {
         .populate({ path: 'image', select: '_id urlImage' })
         .select('_id name role image')
 
-    if (!result) throw new NotFoundError('Talent not found')
+    if (!result) throw new NotFoundError(`No talent has an id : ${id}`)
     return result
 }
 
@@ -58,7 +58,7 @@ const updateTalent = async (req) => {
         { new: true, runValidator: true }
     )
 
-    if (!result) throw new NotFoundError('Talent not found')
+    if (!result) throw new NotFoundError(`No talent has an id : ${id}`)
 
     return result
 }
@@ -67,7 +67,7 @@ const deleteTalent = async (req) => {
     const { id } = req.params
     const result = await Talent.findOne({ _id: id, organizer: req.user.organizer })
 
-    if (!result) throw new NotFoundError('Talent not found')
+    if (!result) throw new NotFoundError(`No talent has an id : ${id}`)
 
     await result.remove()
 
@@ -77,7 +77,7 @@ const deleteTalent = async (req) => {
 const checkingTalent = async (id) => {
     const result = await Talent.findOne({ _id: id })
 
-    if (!result) throw new NotFoundError('Talent not found')
+    if (!result) throw new NotFoundError(`No talent has an id : ${id}`)
 
     return result
 }
