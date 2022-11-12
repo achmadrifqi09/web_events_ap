@@ -3,7 +3,7 @@ const Event = require('../../api/v1/events/model')
 const Payment = require('../../api/v1/payments/model')
 const { createTokenParticipant, createJWT } = require('../../utils')
 const { NotFoundError, BadRequestError, UnauthorizedError } = require('../../error')
-const { otpMail } = require('../mail')
+const { otpMail, invoiceMail } = require('../mail')
 const Order = require('../../api/v1/orders/model')
 
 const singupParticipant = async (req) => {
@@ -129,13 +129,13 @@ const checkoutOrer = async (req) => {
 
     await tickets.forEach((tick) => {
         checkingEvent.tickets.forEach((ticket) => {
-            if (tick.ticketsCategories.type == ticket.type) {
+            if (tick.ticketCategories.type == ticket.type) {
                 if (tick.sumTicket > ticket.stock) {
                     throw new BadRequestError('Not enough remaining tickets')
                 } else {
                     ticket.stock -= tick.sumTicket
                     totalOrderTicket += tick.sumTicket
-                    totalPay += tick.ticketsCategories.price * tick.sumTicket
+                    totalPay += tick.ticketCategories.price * tick.sumTicket
                 }
             }
         })
@@ -173,6 +173,21 @@ const checkoutOrer = async (req) => {
     return result
 }
 
+const invoiceParticipant = async (req) => {
+    const { id } = req.params
+    const checkingOrder = await Order.findOne({
+        _id: id,
+        status: 'paid',
+    })
+
+    if (!checkingOrder) {
+        throw new NotFoundError(`No order has an id ${id} or the order status is still 'Pending'`)
+    }
+
+    await invoiceMail(checkingOrder.participantDetail.email, checkingOrder)
+    return checkingOrder
+}
+
 module.exports = {
     singupParticipant,
     activationParticipant,
@@ -181,4 +196,5 @@ module.exports = {
     getEventDetailById,
     getAllOrder,
     checkoutOrer,
+    invoiceParticipant,
 }

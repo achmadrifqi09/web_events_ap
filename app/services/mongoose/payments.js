@@ -16,7 +16,7 @@ const createPayment = async (req) => {
     const { type, image } = req.body
 
     await checkingImage(image)
-    const checkingPayment = Payment.findOne({ type, organizer: req.user.organizer })
+    const checkingPayment = await Payment.findOne({ type, organizer: req.user.organizer })
 
     if (checkingPayment) throw new BadRequestError('Payment already axist')
 
@@ -71,10 +71,10 @@ const updatePayment = async (req) => {
     return result
 }
 
-const detelePayment = async (req) => {
+const deletePayment = async (req) => {
     const { id } = req.params
 
-    const result = await Payment.findOneAndDelete({ _id: id })
+    const result = await Payment.findOneAndDelete({ _id: id, organizer: req.user.organizer })
 
     if (!result) throw new NotFoundError(`No payment has an id : ${id}`)
 
@@ -111,7 +111,7 @@ module.exports = {
     createPayment,
     getOnePayement,
     updatePayment,
-    detelePayment,
+    deletePayment,
     checkingPayment,
     updatePaymentStatus,
 }

@@ -6,6 +6,7 @@ const {
     getEventDetailById,
     getAllOrder,
     checkoutOrer,
+    invoiceParticipant,
 } = require('../../../services/mongoose/participant')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -105,4 +106,25 @@ const checkout = async (req, res, next) => {
     }
 }
 
-module.exports = { signup, activation, getEvents, getEventById, singin, getOrder, checkout }
+const invoice = async (req, res, next) => {
+    try {
+        await invoiceParticipant(req)
+        res.status(StatusCodes.OK).json({
+            status_code: StatusCodes.OK,
+            message: ReasonPhrases.OK,
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = {
+    signup,
+    activation,
+    getEvents,
+    getEventById,
+    singin,
+    getOrder,
+    checkout,
+    invoice,
+}

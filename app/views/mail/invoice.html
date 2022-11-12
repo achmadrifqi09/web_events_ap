@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Events.ID</title>
+        <style>
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+                overflow: auto;
+                line-height: 2;
+            }
+            .container {
+                margin: 50px auto;
+                width: 90%;
+                padding: 20px 0;
+            }
+            .title {
+                font-size: 1.4em;
+                color: #00466a;
+                text-decoration: none;
+                font-weight: 600;
+            }
+            .sub-title {
+                background: #00466a;
+                margin: 0 auto;
+                width: max-content;
+                padding: 0 10px;
+                color: #fff;
+                border-radius: 4px;
+            }
+            .signature {
+                padding: 8px 0;
+                color: #aaa;
+                font-size: 0.8em;
+                line-height: 1;
+                font-weight: 300;
+            }
+            .item-container {
+                margin: 0 2em;
+            }
+            .container-detail {
+                margin: 1.5em 0;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            table,
+            th,
+            td {
+                border: 1px solid;
+            }
+            th,
+            td {
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div class="container">
+                <div class="header">
+                    <a href="" class="title">Events.ID - Invoice</a>
+                </div>
+                <hr style="border: none; border-top: 1px solid #eee" />
+                <div class="container-detail">
+                    <div class="item">
+                        <p><b>Invoice id</b><br />{{ _id }}</p>
+                        <p>
+                            <b>Cutomer Name</b><br />{{participantDetail.firstName}}
+                            {{participantDetail.lastName}}
+                        </p>
+                        <p><b>Invoice date</b><br />{{createdAt }}</p>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ticket Name</th>
+                            <th scope="col">QTY</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#orderItems}}
+                        <tr>
+                            <td>{{ticketCategories.type}}</td>
+                            <td style="text-align: center">{{sumTicket}}</td>
+                            <td>Rp {{ticketCategories.price}}</td>
+                        </tr>
+                        {{/orderItems}}
+                        <tr>
+                            <td colspan="2" style="text-align: center"><b>Total</b></td>
+                            <td>Rp {{totalPay}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr style="border: none; border-top: 1px solid #eee" />
+                <div class="signature">
+                    <p>Events.ID</p>
+                    <p>Malang 1264 Events.ID</p>
+                    <p>Management</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

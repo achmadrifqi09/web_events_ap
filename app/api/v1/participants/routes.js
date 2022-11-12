@@ -1,6 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const { signup, activation, getEvents, getEventById, singin, getOrder, checkout } = require('./controller')
+const {
+    signup,
+    activation,
+    getEvents,
+    getEventById,
+    singin,
+    getOrder,
+    checkout,
+    invoice,
+} = require('./controller')
 const { authenticateParticipant } = require('../../../middleware/auth')
 
 router.post('/participants/signup', signup)
@@ -15,6 +24,8 @@ router.get('/events/:id', getEventById)
 
 router.get('/orders', authenticateParticipant, getOrder)
 
-router.post('/events/:id/checkout')
+router.post('/checkout', authenticateParticipant, checkout)
+
+router.get('/invoice/:id', authenticateParticipant, invoice)
 
 module.exports = router
