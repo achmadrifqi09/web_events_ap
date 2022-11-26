@@ -1,5 +1,8 @@
 const express = require('express')
+const app = express()
 const config = require('./app/configs/config')
+const cors = require('cors')
+app.use(cors())
 
 const routerApiCategories = require('./app/api/v1/categories/router')
 const routerApiImages = require('./app/api/v1/images/routes')
@@ -17,14 +20,13 @@ const bodyParser = require('body-parser')
 const notFoundMidlleware = require('./app/middleware/not-found')
 const handleErrorMiddleware = require('./app/middleware/handle-error')
 
-const app = express()
 app.use(morgan('tiny'))
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.listen(config.port, () => {
-    console.log(`Server running on port ${process.env.PORT}`)
+   console.log(`Server running on port ${process.env.PORT}`)
 })
 
 const v1 = '/api/v1'
