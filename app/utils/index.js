@@ -1,8 +1,9 @@
 const { createJWT, isInvalidToken } = require('./jsonwebtoken')
-const createUserToken = require('./create-user-token')
+const { createTokenUser, createTokenParticipant } = require('./create-user-token')
 
 module.exports = {
     createJWT,
     isInvalidToken,
-    createUserToken,
+    createTokenUser,
+    createTokenParticipant,
 }

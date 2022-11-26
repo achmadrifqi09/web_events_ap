@@ -1,29 +1,15 @@
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
-
 const {
-   getAllCategory,
-   createCategory,
-   findOneCategory,
-   updateCategory,
-   deleteCategory,
-} = require('../../../services/mongoose/categories')
-
-const index = async (req, res, next) => {
-   try {
-      const result = await getAllCategory(req)
-      res.status(StatusCodes.OK).json({
-         status_code: StatusCodes.OK,
-         message: ReasonPhrases.OK,
-         result: result,
-      })
-   } catch (error) {
-      next(error)
-   }
-}
+   getAllPayment,
+   getOnePayement,
+   createPayment,
+   updatePayment,
+   deletePayment,
+} = require('../../../services/mongoose/payments')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const create = async (req, res, next) => {
    try {
-      const result = await createCategory(req)
+      const result = await createPayment(req)
       res.status(StatusCodes.CREATED).json({
          status_code: StatusCodes.CREATED,
          message: ReasonPhrases.CREATED,
@@ -34,10 +20,22 @@ const create = async (req, res, next) => {
    }
 }
 
+const index = async (req, res, next) => {
+   try {
+      const result = await getAllPayment(req)
+      res.status(StatusCodes.OK).json({
+         status_code: StatusCodes.OK,
+         message: ReasonPhrases.OK,
+         result: result,
+      })
+   } catch (error) {
+      next(error)
+   }
+}
+
 const find = async (req, res, next) => {
    try {
-      const result = await findOneCategory(req)
-
+      const result = await getOnePayement(req)
       res.status(StatusCodes.OK).json({
          status_code: StatusCodes.OK,
          message: ReasonPhrases.OK,
@@ -50,7 +48,7 @@ const find = async (req, res, next) => {
 
 const update = async (req, res, next) => {
    try {
-      const result = await updateCategory(req)
+      const result = await updatePayment(req)
       res.status(StatusCodes.OK).json({
          status_code: StatusCodes.OK,
          message: ReasonPhrases.OK,
@@ -63,8 +61,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
    try {
-      const result = await deleteCategory(req)
-
+      const result = await deletePayment(req)
       res.status(StatusCodes.OK).json({
          status_code: StatusCodes.OK,
          message: ReasonPhrases.OK,
@@ -75,4 +72,10 @@ const destroy = async (req, res, next) => {
    }
 }
 
-module.exports = { index, create, find, update, destroy }
+module.exports = {
+   create,
+   index,
+   find,
+   update,
+   destroy,
+}
